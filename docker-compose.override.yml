@@ -1,6 +1,7 @@
 services:
   mongodb:
     image: mongo:8.0
+    networks: [airflow]
     labels:
       org.opencontainers.image.description: "Persistent exchange-rate database"
     volumes:
@@ -12,6 +13,7 @@ services:
       retries: 20
   mongo-express:
     image: mongo-express:1.0.2
+    networks: [airflow]
     labels:
       org.opencontainers.image.description: "Local exchange-rate database browser"
     depends_on:
