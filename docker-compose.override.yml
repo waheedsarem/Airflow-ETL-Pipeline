@@ -1,0 +1,26 @@
+services:
+  mongodb:
+    image: mongo:8.0
+    labels:
+      org.opencontainers.image.description: "Persistent exchange-rate database"
+    volumes:
+      - exchange_rates_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand({ping:1}).ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  mongo-express:
+    image: mongo-express:1.0.2
+    labels:
+      org.opencontainers.image.description: "Local exchange-rate database browser"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
+      ME_CONFIG_BASICAUTH_ENABLED: "false"
+    ports:
+      - "127.0.0.1:8081:8081"
+volumes:
+  exchange_rates_data:
