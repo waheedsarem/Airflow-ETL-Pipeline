@@ -1,0 +1,6 @@
+.git
+.env
+.astro/config.yaml.lock
+__pycache__/
+evidence/
+*.docx
